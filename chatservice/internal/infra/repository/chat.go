@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"database/sql"
+	"errors"
 	"time"
 
 	"github.com/joao-macieira/fclx/chatservice/internal/domain/entity"
@@ -65,4 +66,68 @@ func (repository *ChatRepositoryMySQL) CreateChat(ctx context.Context, chat *ent
 	}
 
 	return nil
+}
+
+func (repository *ChatRepositoryMySQL) FindByChatID(ctx context.Context, chatID string) (*entity.Chat, error) {
+	chat := &entity.Chat{}
+
+	response, err := repository.Queries.FindChatByID(ctx, chatID)
+
+	if err != nil {
+		return nil, errors.New("chat not found")
+	}
+
+	chat.ID = response.ID
+	chat.UserID = response.UserID
+	chat.Status = response.Status
+	chat.TokenUsage = int(response.TokenUsage)
+	chat.Config = &entity.ChatConfig{
+		Model: &entity.Model{
+			Name:     response.Model,
+			MaxToken: int(response.ModelMaxTokens),
+		},
+		Temperature:      float32(response.Temperature),
+		TopP:             float32(response.TopP),
+		N:                int(response.N),
+		Stop:             []string{response.Stop},
+		MaxTokens:        int(response.ModelMaxTokens),
+		PresencePenalty:  float32(response.FrequencyPenalty),
+		FrequencyPenalty: float32(response.FrequencyPenalty),
+	}
+
+	chatMessages, err := repository.Queries.FindMessagesByChatID(ctx, chat.ID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, message := range chatMessages {
+		chat.Messages = append(chat.Messages, &entity.Message{
+			ID:        message.ID,
+			Content:   message.Content,
+			Role:      message.Role,
+			Tokens:    int(message.Tokens),
+			Model:     &entity.Model{Name: message.Model},
+			CreatedAt: message.CreatedAt,
+		})
+	}
+
+	chatErasedMessages, err := repository.Queries.FindErasedMessagesByChatID(ctx, chat.ID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	for _, message := range chatErasedMessages {
+		chat.ErasedMessages = append(chat.Messages, &entity.Message{
+			ID:        message.ID,
+			Content:   message.Content,
+			Role:      message.Role,
+			Tokens:    int(message.Tokens),
+			Model:     &entity.Model{Name: message.Model},
+			CreatedAt: message.CreatedAt,
+		})
+	}
+
+	return chat, nil
 }
