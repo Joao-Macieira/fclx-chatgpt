@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/joao-macieira/fclx/chatservice/configs"
 	"github.com/joao-macieira/fclx/chatservice/internal/infra/repository"
 	"github.com/joao-macieira/fclx/chatservice/internal/infra/web"
