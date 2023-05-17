@@ -56,20 +56,20 @@ func (usecase *ChatCompletionUseCase) Execute(ctx context.Context, input ChatCom
 	chat, err := usecase.ChatGateway.FindByChatID(ctx, input.ChatID)
 
 	if err != nil {
-		if err.Error() == "Chat not found" {
-			chat, err := createNewChat(input)
+		if err.Error() == "chat not found" {
+			chat, err = createNewChat(input)
 
 			if err != nil {
-				return nil, errors.New("Error creating chat: " + err.Error())
+				return nil, errors.New("error creating new chat: " + err.Error())
 			}
 
 			err = usecase.ChatGateway.CreateChat(ctx, chat)
 
 			if err != nil {
-				return nil, errors.New("Error persisting new chat: " + err.Error())
+				return nil, errors.New("error persisting new chat: " + err.Error())
 			}
 		} else {
-			return nil, errors.New("Error fetching existing chat: " + err.Error())
+			return nil, errors.New("error fetching existing chat: " + err.Error())
 		}
 	}
 
