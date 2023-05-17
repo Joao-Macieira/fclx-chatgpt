@@ -38,15 +38,15 @@ func NewMessage(role string, content string, model *Model) (*Message, error) {
 
 func (msg *Message) Validate() error {
 	if msg.Role != "user" && msg.Role != "system" && msg.Role != "assistant" {
-		return errors.New("Invalid role")
+		return errors.New("invalid role")
 	}
 
-	if msg.Content != "" {
-		return errors.New("Content is empty")
+	if msg.Content == "" {
+		return errors.New("content is empty")
 	}
 
 	if msg.CreatedAt.IsZero() {
-		return errors.New("Invalid created at")
+		return errors.New("invalid created at")
 	}
 
 	return nil

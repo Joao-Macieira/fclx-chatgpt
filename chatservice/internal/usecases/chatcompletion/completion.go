@@ -95,7 +95,7 @@ func (uc *ChatCompletionUseCase) Execute(ctx context.Context, input ChatCompleti
 		openai.ChatCompletionRequest{
 			Model:            chat.Config.Model.Name,
 			Messages:         messages,
-			MaxTokens:        chat.Config.MaxTokens,
+			MaxTokens:        chat.TokenUsage,
 			Temperature:      chat.Config.Temperature,
 			TopP:             chat.Config.TopP,
 			PresencePenalty:  chat.Config.PresencePenalty,

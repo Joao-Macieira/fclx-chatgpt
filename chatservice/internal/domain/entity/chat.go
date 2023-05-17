@@ -50,27 +50,27 @@ func NewChat(userID string, initialSystemMessage *Message, chatConfig *ChatConfi
 
 func (chat *Chat) Validate() error {
 	if chat.UserID == "" {
-		return errors.New("User id is empty")
+		return errors.New("user id is empty")
 	}
 
 	if chat.Status != "active" && chat.Status != "ended" {
-		return errors.New("Invalid status")
+		return errors.New("invalid status")
 	}
 
 	if chat.Config.Temperature < 0 || chat.Config.Temperature > 2 {
-		return errors.New("Invalid temperature")
+		return errors.New("invalid temperature")
 	}
 
 	if chat.Config.TopP < 0 || chat.Config.TopP > 2 {
-		return errors.New("Invalid TopP")
+		return errors.New("invalid TopP")
 	}
 
 	if chat.Config.PresencePenalty < -2 || chat.Config.PresencePenalty > 2 {
-		return errors.New("Invalid presence penalty")
+		return errors.New("invalid presence penalty")
 	}
 
 	if chat.Config.FrequencyPenalty < -2 || chat.Config.FrequencyPenalty > 2 {
-		return errors.New("Invalid frequency penalty")
+		return errors.New("invalid frequency penalty")
 	}
 
 	return nil
