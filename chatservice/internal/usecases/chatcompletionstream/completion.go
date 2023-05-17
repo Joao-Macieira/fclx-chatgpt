@@ -52,7 +52,7 @@ func NewChatCompletionUseCase(chatGateway gateway.ChatGateway, openAIClient *ope
 	}
 }
 
-func (usecase *ChatCompletionUseCase) Execute(ctx context.Context, input ChatCompletionInputDto, stream chan ChatCompletionOutputDto) (*ChatCompletionOutputDto, error) {
+func (usecase *ChatCompletionUseCase) Execute(ctx context.Context, input ChatCompletionInputDto) (*ChatCompletionOutputDto, error) {
 	chat, err := usecase.ChatGateway.FindByChatID(ctx, input.ChatID)
 
 	if err != nil {
