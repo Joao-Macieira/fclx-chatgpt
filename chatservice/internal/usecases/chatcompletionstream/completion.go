@@ -40,14 +40,15 @@ type ChatCompletionOutputDto struct {
 
 type ChatCompletionUseCase struct {
 	ChatGateway  gateway.ChatGateway
-	OpenAiClient openai.Client
+	OpenAiClient *openai.Client
 	Stream       chan ChatCompletionOutputDto
 }
 
-func NewChatCompletionUseCase(chatGateway gateway.ChatGateway, openAiClient openai.Client) *ChatCompletionUseCase {
+func NewChatCompletionUseCase(chatGateway gateway.ChatGateway, openAIClient *openai.Client, stream chan ChatCompletionOutputDto) *ChatCompletionUseCase {
 	return &ChatCompletionUseCase{
 		ChatGateway:  chatGateway,
-		OpenAiClient: openAiClient,
+		OpenAiClient: openAIClient,
+		Stream:       stream,
 	}
 }
 
