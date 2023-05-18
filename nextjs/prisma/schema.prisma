@@ -14,7 +14,7 @@ model Chat {
   id             String    @id @default(uuid())
   remote_chat_id String?
   created_at     DateTime  @default(now())
-  Message        Message[]
+  messages       Message[]
 }
 
 model Message {
