@@ -43,19 +43,16 @@ export async function GET(request: NextRequest, { params }: { params: { messageI
 
   let messageReceived: { content: string, chatId: string } | null = null;
   stream.on("data", (data) => {
-    console.log(`data: ${JSON.stringify(data)}`);
     messageReceived = data;
     writeStream(writer, "message", data);
   });
 
   stream.on("error", async (err) => {
-    console.error(err);
     writeStream(writer, "error", err);
     writer.close();
   });
 
   stream.on("end", async () => {
-    console.log('end');
     if (!messageReceived) {
       writeStream(writer, "error", "No message received");
       writer.close();
