@@ -8,7 +8,7 @@ services:
       - .:/go/src
     ports:
       - "8080:8080"
-      - "50052:50051"
+      - "50051:50051"
   mysql:
     image: mysql:8
     container_name: mysql
