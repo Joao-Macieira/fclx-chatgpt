@@ -110,7 +110,6 @@ function response(responseStream: TransformStream, status: number = 200) {
 }
 
 function writeStream(writer: WritableStreamDefaultWriter, event: Event, data: any) {
-  console.log({data})
   const encoder = new TextEncoder();
   const streamData = typeof data === "string" ? data : JSON.stringify(data);
 
