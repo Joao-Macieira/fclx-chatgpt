@@ -19,3 +19,8 @@ Content-Type: application/json
 {
   "message": "Eu estou testando a API"
 }
+
+###
+@messageId = 6701de5b-f102-412e-b29c-812ed91a0a3a
+
+GET http://localhost:3000/api/messages/{{messageId}}/events

@@ -6,7 +6,8 @@ describe("ChatSetviceClient", () => {
 
     const stream = chatService.chatStream({
       user_id: '1',
-      message: 'Hello world'
+      message: 'Hello world',
+      chat_id: null
     });
 
     stream.on('end', () => {
