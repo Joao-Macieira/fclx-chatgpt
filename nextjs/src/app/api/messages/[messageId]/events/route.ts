@@ -1,10 +1,11 @@
 import { NextRequest } from "next/server";
 import { prisma } from "@/app/prisma/prisma";
 import { ChatServiceClientFactory } from "@/grpc/chat-service-client";
+import { withAuth } from "@/app/api/helpers";
 
 type Event = "message" | "error" | "end";
 
-export async function GET(request: NextRequest, { params }: { params: { messageId: string } }) {
+export const GET = withAuth(async (_request: NextRequest, _token, { params }: { params: { messageId: string } }) => {
   const transformStream = new TransformStream();
   const writer = transformStream.writable.getWriter();
 
@@ -93,7 +94,7 @@ export async function GET(request: NextRequest, { params }: { params: { messageI
   });
 
   return response(transformStream);
-}
+});
 
 function response(responseStream: TransformStream, status: number = 200) {
   return new Response(responseStream.readable, {

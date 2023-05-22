@@ -1,7 +1,8 @@
 import { prisma } from "@/app/prisma/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { withAuth } from "../helpers";
 
-export async function GET(request: NextRequest) {
+export const GET = withAuth(async (_request: NextRequest) => {
   const chats = await prisma.chat.findMany({
     select: {
       id: true,
@@ -18,9 +19,9 @@ export async function GET(request: NextRequest) {
   });
 
   return NextResponse.json(chats);
-}
+});
 
-export async function POST(request: NextRequest) {
+export const POST = withAuth(async (request: NextRequest) => {
   const body = await request.json();
 
   const chatCreated = await prisma.chat.create({
@@ -38,4 +39,4 @@ export async function POST(request: NextRequest) {
   });
 
   return NextResponse.json(chatCreated);
-}
+});
