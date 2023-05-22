@@ -201,8 +201,8 @@ export default function Home() {
         New chat
       </button>
       <div className="flex-grow overflow-y-auto -mr-2 overflow-hidden">
-        {chats?.map((chat, key) => (
-          <div className="pb-2 text-gray-100 text-sm mr-2" key={key}>
+        {chats?.map((chat) => (
+          <div className="pb-2 text-gray-100 text-sm mr-2" key={chat.id}>
             <button
               className="flex p-3 gap-3 rounded hover:bg-[#3f4679] cursor-pointer hover:pr-4 group w-full"
               onClick={() => router.push(`/?id=${chat.id}`)}
@@ -219,9 +219,9 @@ export default function Home() {
     </div>
     <div className="flex-1 flex-col relative">
       <ul id="chatting" className="h-screen overflow-y-auto bg-gray-800">
-        {messages?.map((message, key) => (
+        {messages?.map((message) => (
           <ChatItem
-            key={key}
+            key={message.id}
             content={message.content}
             is_from_bot={message.is_from_bot}
           />
