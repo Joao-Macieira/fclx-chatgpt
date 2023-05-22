@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useLayoutEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import useSWR from 'swr';
 import useSWRSubscription from 'swr/subscription';
 import Image from 'next/image';
@@ -15,6 +16,7 @@ import { PlusIcon } from './components/PlusIcon';
 import { MessageIcon } from './components/MessageIcon';
 import { ArrowRightIcon } from './components/ArrowRightIcon';
 import { UserIcon } from './components/UserIcon';
+import { LogoutIcon } from './components/LogoutIcon';
 
 type ChatWithFirstMessage = Chat & {
   messages: [Message]
@@ -149,6 +151,14 @@ export default function Home() {
     textArea.value = '';
   }
 
+  async function logout() {
+    await signOut({ redirect: false });
+    const { url: logoutUrl } = await ClientHttp.get(
+      `logout-url?${new URLSearchParams({ redirect: window.location.origin })}`
+    );
+    window.location.href = logoutUrl;
+  }
+
   useEffect(() => {
     setChatId(chatIdParam);
   }, [chatIdParam]);
@@ -216,6 +226,13 @@ export default function Home() {
           </div>
         ))}
       </div>
+      <button
+          className="flex p-3 mt-1 gap-3 rounded hover:bg-gray-500/10 text-sm text-white"
+          onClick={() => logout()}
+        >
+          <LogoutIcon className="h-5 w-5" />
+          Log out
+        </button>
     </div>
     <div className="flex-1 flex-col relative">
       <ul id="chatting" className="h-screen overflow-y-auto bg-gray-800">
